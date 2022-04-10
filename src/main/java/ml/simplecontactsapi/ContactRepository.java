@@ -11,13 +11,4 @@ public class ContactRepository implements PanacheRepository<Contact> {
     public Uni<Contact> findByName(String name) {
         return find("name", name).firstResult();
     }
-
-    public Uni<List<Contact>> findAlive() {
-//        return list("status", Status.Alive);
-        return null;
-    }
-
-    public Uni<Long> deleteStefs() {
-        return delete("name", "Stef");
-    }
 }

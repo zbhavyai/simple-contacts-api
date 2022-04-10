@@ -58,7 +58,7 @@ public class Contact extends PanacheEntityBase {
     @Column(name = "label")
     private String label;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -184,5 +184,27 @@ public class Contact extends PanacheEntityBase {
 
     public void setLabel(String label) {
         this.label = label;
+    }
+
+    @Override
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        sb.append(String.format("\nId = %d", id));
+        sb.append(String.format("\nPrefix = %s", namePrefix == null ? "null" : namePrefix));
+        sb.append(String.format("\nFirst Name = %s", firstName == null ? "null" : firstName));
+        sb.append(String.format("\nMiddle Name = %s", middleName == null ? "null" : middleName));
+        sb.append(String.format("\nLast Name = %s", last_name == null ? "null" : last_name));
+        sb.append(String.format("\nSuffix = %s", nameSuffix == null ? "null" : nameSuffix));
+        sb.append(String.format("\nNickname = %s", nickname == null ? "null" : nickname));
+        sb.append(String.format("\nCompany = %s", company == null ? "null" : company));
+        sb.append(String.format("\nDepartment = %s", department == null ? "null" : department));
+        sb.append(String.format("\nTitle = %s", title == null ? "null" : title));
+        sb.append(String.format("\nPhone = %s", phone == null ? "null" : phone));
+        sb.append(String.format("\nEmail = %s", email == null ? "null" : email));
+        sb.append(String.format("\nDOB = %s", dateOfBirth == null ? "null" : dateOfBirth));
+        sb.append(String.format("\nWebsite = %s", website == null ? "null" : website));
+        sb.append(String.format("\nNotes = %s", notes == null ? "null" : notes));
+        sb.append(String.format("\nLabel = %s", label == null ? "null" : label));
+        return sb.toString();
     }
 }
