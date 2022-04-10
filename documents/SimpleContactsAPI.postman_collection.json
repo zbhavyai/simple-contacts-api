@@ -1,0 +1,140 @@
+{
+	"info": {
+		"_postman_id": "ac02bc5b-78dc-4785-b4ff-28517c76f17f",
+		"name": "SimpleContactsAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get all contacts",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/contacts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"contacts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get contact by ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/contacts/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"contacts",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add contact",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"namePrefix\": null,\n    \"firstName\": \"Michael\",\n    \"middleName\": \"Gary\",\n    \"last_name\": \"Scott\",\n    \"nameSuffix\": null,\n    \"nickname\": \"Ping\",\n    \"company\": \"Dunder Mifflin\",\n    \"department\": \"HR\",\n    \"title\": \"Regional Manager\",\n    \"phone\": \"111-111-1111\",\n    \"email\": \"m.scott@dundermifflin.com\",\n    \"dateOfBirth\": \"1965-03-15\",\n    \"website\": null,\n    \"notes\": null,\n    \"label\": null\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/contacts/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"contacts",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Modify contact",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"namePrefix\": \"Dr\",\n    \"firstName\": \"Michael\",\n    \"middleName\": \"Gary\",\n    \"last_name\": \"Scott\",\n    \"nameSuffix\": null,\n    \"nickname\": \"Ping\",\n    \"company\": \"Dunder Mifflin\",\n    \"department\": \"HR\",\n    \"title\": \"Regional Manager\",\n    \"phone\": \"111-111-1111\",\n    \"email\": \"m.scott@dundermifflin.com\",\n    \"dateOfBirth\": \"1965-03-15\",\n    \"website\": null,\n    \"notes\": null,\n    \"label\": null\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/contacts/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"contacts",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete contact",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/contacts/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"contacts",
+						"3"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
