@@ -23,7 +23,7 @@ public class Contact extends PanacheEntityBase {
     private String middleName;
 
     @Column(name = "last_name")
-    private String last_name;
+    private String lastName;
 
     @Column(name = "name_suffix")
     private String nameSuffix;
@@ -74,8 +74,8 @@ public class Contact extends PanacheEntityBase {
         return middleName;
     }
 
-    public String getLast_name() {
-        return last_name;
+    public String getLastName() {
+        return lastName;
     }
 
     public String getNameSuffix() {
@@ -122,11 +122,75 @@ public class Contact extends PanacheEntityBase {
         return label;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setNamePrefix(String namePrefix) {
+        this.namePrefix = namePrefix;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setNameSuffix(String nameSuffix) {
+        this.nameSuffix = nameSuffix;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
     public void updateContact(Contact c) {
         namePrefix = c.namePrefix;
         firstName = c.firstName;
         middleName = c.middleName;
-        last_name = c.last_name;
+        lastName = c.lastName;
         nameSuffix = c.nameSuffix;
         nickname = c.nickname;
         company = c.company;
@@ -147,7 +211,7 @@ public class Contact extends PanacheEntityBase {
         sb.append(String.format("\nPrefix = %s", namePrefix == null ? "null" : namePrefix));
         sb.append(String.format("\nFirst Name = %s", firstName == null ? "null" : firstName));
         sb.append(String.format("\nMiddle Name = %s", middleName == null ? "null" : middleName));
-        sb.append(String.format("\nLast Name = %s", last_name == null ? "null" : last_name));
+        sb.append(String.format("\nLast Name = %s", lastName == null ? "null" : lastName));
         sb.append(String.format("\nSuffix = %s", nameSuffix == null ? "null" : nameSuffix));
         sb.append(String.format("\nNickname = %s", nickname == null ? "null" : nickname));
         sb.append(String.format("\nCompany = %s", company == null ? "null" : company));
