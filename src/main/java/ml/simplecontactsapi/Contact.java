@@ -122,68 +122,22 @@ public class Contact extends PanacheEntityBase {
         return label;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setNamePrefix(String namePrefix) {
-        this.namePrefix = namePrefix;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public void setMiddleName(String middleName) {
-        this.middleName = middleName;
-    }
-
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
-    }
-
-    public void setNameSuffix(String nameSuffix) {
-        this.nameSuffix = nameSuffix;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
-    public void setCompany(String company) {
-        this.company = company;
-    }
-
-    public void setDepartment(String department) {
-        this.department = department;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setDateOfBirth(LocalDate dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public void setWebsite(String website) {
-        this.website = website;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
-
-    public void setLabel(String label) {
-        this.label = label;
+    public void updateContact(Contact c) {
+        namePrefix = c.namePrefix;
+        firstName = c.firstName;
+        middleName = c.middleName;
+        last_name = c.last_name;
+        nameSuffix = c.nameSuffix;
+        nickname = c.nickname;
+        company = c.company;
+        department = c.department;
+        title = c.title;
+        phone = c.phone;
+        email = c.email;
+        dateOfBirth = c.dateOfBirth;
+        website = c.website;
+        notes = c.notes;
+        label = c.label;
     }
 
     @Override

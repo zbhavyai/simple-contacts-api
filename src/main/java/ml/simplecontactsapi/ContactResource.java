@@ -49,24 +49,6 @@ public class ContactResource {
                 .transform(inserted -> Response.created(URI.create("/api/contacts/" + inserted.getId())).build());
     }
 
-    private void copyContact(Contact destination, Contact source) {
-        destination.setNamePrefix(source.getNamePrefix());
-        destination.setFirstName(source.getFirstName());
-        destination.setMiddleName(source.getMiddleName());
-        destination.setLast_name(source.getLast_name());
-        destination.setNameSuffix(source.getNameSuffix());
-        destination.setNickname(source.getNickname());
-        destination.setCompany(source.getCompany());
-        destination.setDepartment(source.getDepartment());
-        destination.setTitle(source.getTitle());
-        destination.setPhone(source.getPhone());
-        destination.setEmail(source.getEmail());
-        destination.setDateOfBirth(source.getDateOfBirth());
-        destination.setWebsite(source.getWebsite());
-        destination.setNotes(source.getNotes());
-        destination.setLabel(source.getLabel());
-    }
-
     @PUT
     @Path("{id}")
     public Uni<Response> updateContact(@RestPath Long id, Contact c) {
@@ -78,7 +60,7 @@ public class ContactResource {
 
         return Panache
                 .withTransaction(() -> Contact.<Contact>findById(id).onItem().ifNotNull()
-                        .invoke(entity -> copyContact(entity, c)))
+                        .invoke(entity -> entity.updateContact(c)))
                 .onItem().ifNotNull().transform(entity -> Response.ok(entity).build()).onItem().ifNull()
                 .continueWith(Response.ok().status(Status.NOT_FOUND)::build);
     }
