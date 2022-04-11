@@ -1,0 +1,154 @@
+{
+	"info": {
+		"_postman_id": "7fee0860-6f84-456d-95ea-053c73db338a",
+		"name": "SimpleContactsGraphQL",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get all contacts",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query getMeAllContacts {\n    allContacts {\n        id\n        firstName\n        lastName\n        phone\n    }\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get contact by ID",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query getMeSpecificContact {\n    getContactById(contactId: 2) {\n        firstName\n        title\n        email\n    }\n}\n",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add contact",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation addMyContact {\n    addContact(c: {\n        namePrefix: null,\n        firstName: \"Simon\",\n        middleName: \"Gary\",\n        lastName: \"Scott\",\n        nameSuffix: null,\n        nickname: \"Ping\",\n        company: \"Dunder Mifflin\",\n        department: \"HR\",\n        title: \"Regional Manager\",\n        phone: \"111-111-1111\",\n        email: \"m.scott@dundermifflin.com\",\n        dateOfBirth: \"1965-03-15\",\n        website: null,\n        notes: null,\n        label: null\n        }\n    )\n    {\n        dateOfBirth\n        firstName\n    }\n}\n",
+						"variables": ""
+					},
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Modify contact",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation updateMyContact {\n    updateContact(contactId: 3, c: {\n      namePrefix: null,\n        firstName: \"Michael\",\n        middleName: \"Gary\",\n        lastName: \"Scott\",\n        nameSuffix: null,\n        nickname: \"Ping\",\n        company: \"Dunder Mifflin\",\n        department: \"HR\",\n        title: \"Regional Manager\",\n        phone: \"111-111-1111\",\n        email: \"m.scott@dundermifflin.com\",\n        dateOfBirth: \"1965-03-15\",\n        website: null,\n        notes: null,\n        label: null\n    })\n    {\n        dateOfBirth\n        firstName\n    }\n}\n",
+						"variables": ""
+					},
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete contact",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation deleteContact {\n  deleteContact(contactId:2)\n}",
+						"variables": ""
+					},
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
