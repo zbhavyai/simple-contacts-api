@@ -1,6 +1,6 @@
 # A simple demo of API for Quarkus
 
-A very simple API performing CRUD on contacts stored on local postgres database.
+A very simple REST API and GraphQL API performing CRUD on contacts stored on local postgres database.
 
 ## Dependencies
 
@@ -24,4 +24,6 @@ A very simple API performing CRUD on contacts stored on local postgres database.
    $ mvn quarkus:dev
    ```
 
-6. To test the endpoints, load the file [SimpleContactsAPI.postman_collection.json](documents/SimpleContactsAPI.postman_collection.json) in Postman and execute the API calls.
+6. To test the REST endpoints, load the file [SimpleContactsAPI.postman_collection.json](documents/SimpleContactsAPI.postman_collection.json) in Postman and execute the API calls.
+
+7. To test the GraphQL endpoints, load the file [SimpleContactsGraphQL.postman_collection.json](documents/SimpleContactsGraphQL.postman_collection.json) in Postman and execute the API calls.
