@@ -7,7 +7,10 @@ import org.eclipse.microprofile.graphql.Mutation;
 import org.eclipse.microprofile.graphql.Name;
 import org.eclipse.microprofile.graphql.Query;
 import io.smallrye.graphql.api.Context;
+import io.smallrye.graphql.api.Subscription;
 import io.smallrye.mutiny.Uni;
+import io.smallrye.mutiny.Multi;
+import io.smallrye.mutiny.operators.multi.processors.BroadcastProcessor;
 import io.vertx.core.cli.annotations.Description;
 import io.quarkus.hibernate.reactive.panache.Panache;
 
@@ -18,6 +21,8 @@ public class ContactGraphResource {
 
     @Inject
     Context context;
+
+    BroadcastProcessor<Contact> processor = BroadcastProcessor.create();
 
     @Query("allContacts")
     @Description("Get all contacts from the database")
@@ -58,7 +63,14 @@ public class ContactGraphResource {
     @Mutation("addContact")
     @Description("Add a contact")
     public Uni<Contact> addContact(Contact c) {
-        return Panache.<Contact>withTransaction(c::persist);
+        processor.onNext(c);
+        Uni<Contact> uc = Panache.<Contact>withTransaction(c::persist);
+        return uc;
+    }
+
+    @Subscription
+    public Multi<Contact> contactAdded() {
+        return processor;
     }
 
     @Mutation("updateContact")
