@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "7fee0860-6f84-456d-95ea-053c73db338a",
+		"_postman_id": "2b9365e6-8361-4b10-977a-5a76ee91a36a",
 		"name": "SimpleContactsGraphQL",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -13,7 +13,7 @@
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "query getMeAllContacts {\n    allContacts {\n        id\n        firstName\n        lastName\n        phone\n    }\n}",
+						"query": "query getMeAllContacts {\n    allContacts {\n        id\n        firstName\n        lastName\n        phone\n        email\n    }\n}",
 						"variables": ""
 					}
 				},
@@ -58,6 +58,110 @@
 			"response": []
 		},
 		{
+			"name": "Get contact by Email",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query getMeSpecificContact {\n    getContactByEmail(email: \"d.shrute@dundermifflin.com\") {\n        firstName\n        title\n        email\n    }\n}\n",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get contact by Name",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query getMeSpecificContact {\n    getContactByName(name: \"jim\") {\n        firstName\n        title\n        email\n    }\n}\n",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search contact by Email",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query getMeSpecificContact {\n    searchContactByEmail(email: \"shru\") {\n        firstName\n        title\n        phone\n    }\n}\n",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search contact by Name",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query getMeSpecificContact {\n    searchContactByName(name: \"shru\") {\n        firstName\n        title\n        phone\n    }\n}\n",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Add contact",
 			"request": {
 				"method": "POST",
@@ -67,11 +171,6 @@
 					"graphql": {
 						"query": "mutation addMyContact {\n    addContact(c: {\n        namePrefix: null,\n        firstName: \"Simon\",\n        middleName: \"Gary\",\n        lastName: \"Scott\",\n        nameSuffix: null,\n        nickname: \"Ping\",\n        company: \"Dunder Mifflin\",\n        department: \"HR\",\n        title: \"Regional Manager\",\n        phone: \"111-111-1111\",\n        email: \"m.scott@dundermifflin.com\",\n        dateOfBirth: \"1965-03-15\",\n        website: null,\n        notes: null,\n        label: null\n        }\n    )\n    {\n        dateOfBirth\n        firstName\n    }\n}\n",
 						"variables": ""
-					},
-					"options": {
-						"raw": {
-							"language": "json"
-						}
 					}
 				},
 				"url": {
@@ -98,11 +197,6 @@
 					"graphql": {
 						"query": "mutation updateMyContact {\n    updateContact(contactId: 3, c: {\n      namePrefix: null,\n        firstName: \"Michael\",\n        middleName: \"Gary\",\n        lastName: \"Scott\",\n        nameSuffix: null,\n        nickname: \"Ping\",\n        company: \"Dunder Mifflin\",\n        department: \"HR\",\n        title: \"Regional Manager\",\n        phone: \"111-111-1111\",\n        email: \"m.scott@dundermifflin.com\",\n        dateOfBirth: \"1965-03-15\",\n        website: null,\n        notes: null,\n        label: null\n    })\n    {\n        dateOfBirth\n        firstName\n    }\n}\n",
 						"variables": ""
-					},
-					"options": {
-						"raw": {
-							"language": "json"
-						}
 					}
 				},
 				"url": {
@@ -129,11 +223,6 @@
 					"graphql": {
 						"query": "mutation deleteContact {\n  deleteContact(contactId:2)\n}",
 						"variables": ""
-					},
-					"options": {
-						"raw": {
-							"language": "json"
-						}
 					}
 				},
 				"url": {
