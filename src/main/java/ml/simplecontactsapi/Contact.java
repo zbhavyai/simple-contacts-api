@@ -2,6 +2,7 @@ package ml.simplecontactsapi;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.quarkus.hibernate.reactive.panache.PanacheEntityBase;
 
 @Entity
@@ -202,6 +203,32 @@ public class Contact extends PanacheEntityBase {
         website = c.website;
         notes = c.notes;
         label = c.label;
+    }
+
+    @JsonIgnore
+    public String getFullName() {
+        StringBuilder sb = new StringBuilder();
+
+        if (firstName != null) {
+            sb.append(firstName);
+        }
+
+        if (middleName != null) {
+            sb.append(" " + middleName);
+        }
+
+        if (lastName != null) {
+            sb.append(" " + lastName);
+        }
+
+        // to handle null if no name is provided
+        if (sb.length() == 0) {
+            return "";
+        }
+
+        else {
+            return sb.toString();
+        }
     }
 
     @Override

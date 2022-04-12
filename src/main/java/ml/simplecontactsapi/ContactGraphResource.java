@@ -31,6 +31,30 @@ public class ContactGraphResource {
         return _contactRepository.findById(id);
     }
 
+    @Query("getContactByName")
+    @Description("Get a contact by name")
+    public Uni<List<Contact>> getContactByName(@Name("name") String name) {
+        return _contactRepository.findByName(name);
+    }
+
+    @Query("searchContactByName")
+    @Description("Search a contact by name")
+    public Uni<List<Contact>> searchContactByName(@Name("name") String name) {
+        return _contactRepository.searchByName(name);
+    }
+
+    @Query("getContactByEmail")
+    @Description("Get a contact by email")
+    public Uni<List<Contact>> getContactByEmail(@Name("email") String email) {
+        return _contactRepository.findByEmail(email);
+    }
+
+    @Query("searchContactByEmail")
+    @Description("Search a contact by email")
+    public Uni<List<Contact>> searchContactByEmail(@Name("email") String email) {
+        return _contactRepository.searchByEmail(email);
+    }
+
     @Mutation("addContact")
     @Description("Add a contact")
     public Uni<Contact> addContact(Contact c) {
