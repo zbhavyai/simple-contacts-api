@@ -1,6 +1,6 @@
 # A simple demo of API for Quarkus
 
-A very simple REST API and GraphQL API performing CRUD on contacts stored on local postgres database.
+A very simple GraphQL API and GraphQL Client for contacts stored on local postgres database.
 
 ## Dependencies
 
@@ -18,12 +18,8 @@ A very simple REST API and GraphQL API performing CRUD on contacts stored on loc
 
 4. Run the script [`init.sql`](documents/init.sql) on the PostgreSQL server. This script will create a user `quarkustest` with password `sqlquarkustest` and a database `quarkustest`.
 
-5. Running the below command from the repository's root directory will get the API running.
+5. To run the GraphQL API, execute the [`run_graphql_api.sh`](run_graphql_api.sh) script. It will launch the quarkus in dev mode at port 5005, and GraphQL API will be available at [`http://localhost:8080/graphql`](http://localhost:8080/graphql).
 
-   ```bash
-   $ mvn quarkus:dev
-   ```
+6. To test the GraphQL endpoints, load the file [SimpleContactsGraphQL.postman_collection.json](documents/SimpleContactsGraphQL.postman_collection.json) in Postman and execute the API calls.
 
-6. To test the REST endpoints, load the file [SimpleContactsAPI.postman_collection.json](documents/SimpleContactsAPI.postman_collection.json) in Postman and execute the API calls.
-
-7. To test the GraphQL endpoints, load the file [SimpleContactsGraphQL.postman_collection.json](documents/SimpleContactsGraphQL.postman_collection.json) in Postman and execute the API calls.
+7. To run the GraphQL Client, execute the [`run_graphql_client.sh`](run_graphql_client.sh) script. It will launch the quarkus in dev mode at port 5006, and GraphQL API query results will be available at [`http://localhost:8081/dynamic`](http://localhost:8081/dynamic).
