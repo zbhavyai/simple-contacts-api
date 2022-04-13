@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "2b9365e6-8361-4b10-977a-5a76ee91a36a",
-		"name": "SimpleContactsGraphQL",
+		"name": "SimpleContacts GraphQL API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
