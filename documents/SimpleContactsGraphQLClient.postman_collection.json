@@ -1,0 +1,28 @@
+{
+	"info": {
+		"_postman_id": "a137fbe3-4da1-4dcf-b6c2-d7ea2f6a3932",
+		"name": "SimpleContacts GraphQL Client",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get all contacts",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/dynamic",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"dynamic"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
