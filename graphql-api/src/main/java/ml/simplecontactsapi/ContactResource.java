@@ -16,15 +16,12 @@ import io.smallrye.mutiny.Uni;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class ContactResource {
-    @Inject
     private ContactRepository _contactRepository;
 
-//    @GET
-//    @Path("/count")
-//    @Produces(MediaType.TEXT_PLAIN)
-//    public Uni<Long> contactsCount() {
-//        return _contactRepository.count();
-//    }
+    @Inject
+    public ContactResource(ContactRepository cr) {
+        _contactRepository = cr;
+    }
 
     @GET
     public Uni<List<Contact>> getAllContacts() {

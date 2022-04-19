@@ -16,13 +16,16 @@ import io.quarkus.hibernate.reactive.panache.Panache;
 
 @GraphQLApi
 public class ContactGraphResource {
-    @Inject
     private ContactRepository _contactRepository;
-
-    @Inject
-    Context context;
+    private Context _context;
 
     BroadcastProcessor<Contact> processor = BroadcastProcessor.create();
+
+    @Inject
+    public ContactGraphResource(ContactRepository contactRepository, Context context) {
+        _contactRepository = contactRepository ;
+        _context = context;
+    }
 
     @Query("allContacts")
     @Description("Get all contacts from the database")
@@ -70,6 +73,7 @@ public class ContactGraphResource {
 
     @Subscription
     public Multi<Contact> contactAdded() {
+        System.out.println("Subscription is getting called");
         return processor;
     }
 
