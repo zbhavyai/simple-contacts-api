@@ -1,6 +1,7 @@
 package ml.simplecontactsapi;
 
 import java.util.List;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import org.eclipse.microprofile.graphql.GraphQLApi;
 import org.eclipse.microprofile.graphql.Mutation;
@@ -15,9 +16,10 @@ import io.vertx.core.cli.annotations.Description;
 import io.quarkus.hibernate.reactive.panache.Panache;
 
 @GraphQLApi
+@ApplicationScoped
 public class ContactGraphResource {
-    private ContactRepository _contactRepository;
-    private Context _context;
+    private final ContactRepository _contactRepository;
+    private final Context _context;
 
     BroadcastProcessor<Contact> processor = BroadcastProcessor.create();
 
