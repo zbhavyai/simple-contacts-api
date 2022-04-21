@@ -7,7 +7,6 @@ import org.eclipse.microprofile.graphql.GraphQLApi;
 import org.eclipse.microprofile.graphql.Mutation;
 import org.eclipse.microprofile.graphql.Name;
 import org.eclipse.microprofile.graphql.Query;
-import io.smallrye.graphql.api.Context;
 import io.smallrye.graphql.api.Subscription;
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.Multi;
@@ -19,14 +18,16 @@ import io.quarkus.hibernate.reactive.panache.Panache;
 @ApplicationScoped
 public class ContactGraphResource {
     private final ContactRepository _contactRepository;
-    private final Context _context;
-
-    BroadcastProcessor<Contact> processor = BroadcastProcessor.create();
+    private final BroadcastProcessor<Contact> _addedContactsProcessor;
+    private final BroadcastProcessor<Contact> _updatedContactsProcessor;
+    private final BroadcastProcessor<Long> _deletedContactsProcessor;
 
     @Inject
-    public ContactGraphResource(ContactRepository contactRepository, Context context) {
-        _contactRepository = contactRepository ;
-        _context = context;
+    public ContactGraphResource(ContactRepository contactRepository) {
+        _contactRepository = contactRepository;
+        _addedContactsProcessor = BroadcastProcessor.create();
+        _updatedContactsProcessor = BroadcastProcessor.create();
+        _deletedContactsProcessor = BroadcastProcessor.create();
     }
 
     @Query("allContacts")
@@ -68,27 +69,47 @@ public class ContactGraphResource {
     @Mutation("addContact")
     @Description("Add a contact")
     public Uni<Contact> addContact(Contact c) {
-        processor.onNext(c);
         Uni<Contact> uc = Panache.<Contact>withTransaction(c::persist);
+        _addedContactsProcessor.onNext(c);
         return uc;
     }
 
-    @Subscription
+    @Subscription("addedContact")
     public Multi<Contact> contactAdded() {
-        System.out.println("Subscription is getting called");
-        return processor;
+        System.out.println("Subscription is getting called for addedContact");
+        return _addedContactsProcessor;
     }
 
     @Mutation("updateContact")
     @Description("Update a contact")
     public Uni<Contact> updateContact(@Name("contactId") Long id, Contact c) {
-        return Panache.withTransaction(
+        Uni<Contact> uc = Panache.withTransaction(
                 () -> Contact.<Contact>findById(id).onItem().ifNotNull().invoke(entity -> entity.updateContact(c)));
+        _updatedContactsProcessor.onNext(c);
+        return uc;
+    }
+
+    @Subscription("updatedContact")
+    public Multi<Contact> contactUpdated() {
+        System.out.println("Subscription is getting called for updatedContact");
+        return _updatedContactsProcessor;
     }
 
     @Mutation("deleteContact")
     @Description("Delete a contact")
     public Uni<Boolean> deleteContact(@Name("contactId") Long id) {
-        return Panache.withTransaction(() -> Contact.deleteById(id));
+        Uni<Boolean> isDeleted = Panache.withTransaction(() -> Contact.deleteById(id));
+
+        // wait for confirmation of deletion
+        // _deletedContactsProcessor.onNext(isDeleted.await().indefinitely());
+        _deletedContactsProcessor.onNext(id);
+
+        return isDeleted;
+    }
+
+    @Subscription("deletedContact")
+    public Multi<Long> contactDeleted() {
+        System.out.println("Subscription is getting called for deletedContact");
+        return _deletedContactsProcessor;
     }
 }
