@@ -1,7 +1,6 @@
 package ml.simplecontactsclient;
 
 import java.net.URI;
-import java.util.concurrent.LinkedBlockingDeque;
 import javax.enterprise.context.ApplicationScoped;
 import javax.websocket.ClientEndpoint;
 import javax.websocket.CloseReason;
@@ -10,23 +9,22 @@ import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
+import javax.websocket.WebSocketContainer;
 
 @ApplicationScoped
+@ClientEndpoint
 public class ContactSubscription {
+    private Session userSession = null;
+    private MessageHandler messageHandler;
+    private final URI _endpointURI = URI.create("ws://localhost:8080/graphql");
 
-    // private static final LinkedBlockingDeque<String> MESSAGES = new
-    // LinkedBlockingDeque<>();
+    // new URI("wss://localhost:8080/graphql")
+    // URI graphqlSubscriptionURL = URI.create("http://localhost:8080/graphql");
 
-    ContactSubscription() {
+    public ContactSubscription() {
         try {
-            URI graphqlSubscriptionURL = URI.create("http://localhost:8080/graphql");
-
-            Session session = ContainerProvider.getWebSocketContainer().connectToServer(Client.class,
-                    graphqlSubscriptionURL);
-
-            // session.getAsyncRemote()
-            // System.out.println("WebSocket opened: " + session.getId());
-
+            WebSocketContainer container = ContainerProvider.getWebSocketContainer();
+            container.connectToServer(this, this._endpointURI);
         }
 
         catch (Exception e) {
@@ -34,31 +32,39 @@ public class ContactSubscription {
         }
     }
 
-    @ClientEndpoint
-    public static class Client {
-        /*
-         * @OnOpen public void open(Session session) { // Send a message to indicate
-         * that we are ready, // as the message handler may not be registered
-         * immediately after this callback.
-         * session.getAsyncRemote().sendText("_ready_");
-         *
-         * System.out.println(session.getId()); }
-         */
+    @OnOpen
+    public void onOpen(Session userSession) {
+        System.out.println("WebSocket opened: " + userSession.getId());
+        this.userSession = userSession;
+    }
 
-        @OnOpen
-        public void helloOnOpen(Session session) {
-            System.out.println("WebSocket opened: " + session.getId());
-        }
+    @OnClose
+    public void onClose(Session userSession, CloseReason reason) {
+        System.out.println("WebSocket connection closed with CloseCode: " + reason.getCloseCode());
+        this.userSession = null;
+    }
 
-        @OnMessage
-        void message(String msg) {
-            System.out.println(msg);
-        }
-
-        @OnClose
-        public void helloOnClose(CloseReason reason) {
-            System.out.println("WebSocket connection closed with CloseCode: " + reason.getCloseCode());
+    @OnMessage
+    public void onMessage(String message) {
+        if (this.messageHandler != null) {
+            this.messageHandler.handleMessage(message);
         }
     }
 
+    public void sendMessage(String message) {
+        this.userSession.getAsyncRemote().sendText(message);
+    }
+
+    /*
+     * @OnMessage public void onMessage(ByteBuffer bytes) {
+     * System.out.println("Handle byte buffer"); }
+     */
+
+    public void addMessageHandler(MessageHandler msgHandler) {
+        this.messageHandler = msgHandler;
+    }
+
+    public static interface MessageHandler {
+        public void handleMessage(String message);
+    }
 }

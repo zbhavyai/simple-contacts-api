@@ -1,5 +1,6 @@
 package ml.simplecontactsclient;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.Produces;
@@ -17,6 +18,7 @@ import static io.smallrye.graphql.client.core.Argument.args;
 import static io.smallrye.graphql.client.core.Field.field;
 import static io.smallrye.graphql.client.core.Operation.operation;
 
+@ApplicationScoped
 @Path("/")
 public class ContactClient {
     @Inject
@@ -47,10 +49,37 @@ public class ContactClient {
         return this.dynamicClient.executeAsync(query);
     }
 
+    /**
+     * Only to activate the web socket just by visiting the endpoint
+     *
+     * @return
+     */
     @GET
     @Path("/dynamic/subscription")
-    public Uni<Void> subscribeToAdd() {
-        ContactSubscription cs = new ContactSubscription();
+    public Uni<Void> subscribeToAdd() throws Exception {
+        final ContactSubscription clientEndPoint = new ContactSubscription();
+
+        clientEndPoint.addMessageHandler(new ContactSubscription.MessageHandler() {
+            @Override
+            public void handleMessage(String message) {
+                System.out.println(message);
+            }
+        });
+
+        // Document query = document(operation( field("addedContact",
+        // field("firstName"), field("company"), field("phone"),
+        // field("lastName"))));
+
+        clientEndPoint.sendMessage("addedContact {\ncompany\n}\n}");
+
+//        try {
+//            while (true) {
+//            }
+//        }
+//
+//        catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
         return Uni.createFrom().voidItem();
     }
