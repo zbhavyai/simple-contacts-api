@@ -24,17 +24,12 @@ public class ContactClient {
     DynamicGraphQLClient dynamicClient;
 
     @GET
-    @Path("/dynamic")
+    @Path("/dynamic/contacts")
     @Produces(MediaType.APPLICATION_JSON)
     @Blocking
     public Uni<Response> getAllContactsUsingDynamicClient() throws Exception {
         Document query = document(
-                operation(
-                        field("allContacts",
-                                field("firstName"),
-                                field("phone"),
-                                field("email"),
-                                field("lastName"))));
+                operation(field("allContacts", field("firstName"), field("phone"), field("email"), field("lastName"))));
         // Response response = dynamicClient.executeSync(query);
         // return response.getData();
 
@@ -42,19 +37,21 @@ public class ContactClient {
     }
 
     @GET
-    @Path("/dynamic/{name}")
+    @Path("/dynamic/contacts/{name}")
     @Produces(MediaType.APPLICATION_JSON)
     @Blocking
     public Uni<Response> getAllContactsByNameUsingDynamicClient(@RestPath String name) throws Exception {
-        Document query = document(
-                operation(
-                        field("getContactByName", args(arg("name", name)),
-                                field("firstName"),
-                                field("nickname"),
-                                field("phone"),
-                                field("email"),
-                                field("lastName"))));
+        Document query = document(operation(field("getContactByName", args(arg("name", name)), field("firstName"),
+                field("nickname"), field("phone"), field("email"), field("lastName"))));
 
         return this.dynamicClient.executeAsync(query);
+    }
+
+    @GET
+    @Path("/dynamic/subscription")
+    public Uni<Void> subscribeToAdd() {
+        ContactSubscription cs = new ContactSubscription();
+
+        return Uni.createFrom().voidItem();
     }
 }
