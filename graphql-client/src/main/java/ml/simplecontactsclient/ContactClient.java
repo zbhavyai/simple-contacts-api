@@ -12,6 +12,7 @@ import io.smallrye.graphql.client.Response;
 import io.smallrye.graphql.client.core.Document;
 import io.smallrye.graphql.client.dynamic.api.DynamicGraphQLClient;
 import io.smallrye.mutiny.Uni;
+import io.smallrye.mutiny.Multi;
 import static io.smallrye.graphql.client.core.Document.document;
 import static io.smallrye.graphql.client.core.Argument.arg;
 import static io.smallrye.graphql.client.core.Argument.args;
@@ -56,31 +57,28 @@ public class ContactClient {
      */
     @GET
     @Path("/dynamic/subscription")
-    public Uni<Void> subscribeToAdd() throws Exception {
-        final ContactSubscription clientEndPoint = new ContactSubscription();
+    @Produces(MediaType.APPLICATION_JSON)
+    public Multi<Response> subscribeToAdd() throws Exception {
 
-        clientEndPoint.addMessageHandler(new ContactSubscription.MessageHandler() {
-            @Override
-            public void handleMessage(String message) {
-                System.out.println(message);
-            }
-        });
+        // Document query = document(operation(field("addedContact", field("company"),
+        // field("phone"), field("email"))));
+        String queryString = "subscription test {\naddedContact {\ncompany\nfirstName\n}\n}";
 
-        // Document query = document(operation( field("addedContact",
-        // field("firstName"), field("company"), field("phone"),
-        // field("lastName"))));
+        return this.dynamicClient.subscription(queryString);
 
-        clientEndPoint.sendMessage("addedContact {\ncompany\n}\n}");
+        // return this.dynamicClient.executeAsync(query);
+        // return this.dynamicClient.subscription(query);
 
-//        try {
-//            while (true) {
-//            }
-//        }
-//
-//        catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        /*
+         * final ContactSubscription clientEndPoint = new ContactSubscription();
+         * clientEndPoint.addMessageHandler(new ContactSubscription.MessageHandler() {
+         *
+         * @Override public void handleMessage(String message) {
+         * System.out.println(message); } });
+         *
+         * clientEndPoint.sendMessage("addedContact {\ncompany\n}\n}");
+         */
 
-        return Uni.createFrom().voidItem();
+        // return Uni.createFrom().voidItem();
     }
 }
