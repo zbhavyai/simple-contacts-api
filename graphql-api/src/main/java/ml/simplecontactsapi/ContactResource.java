@@ -1,72 +1,118 @@
 package ml.simplecontactsapi;
 
-import java.net.URI;
 import java.util.List;
-import javax.inject.Inject;
-import javax.ws.rs.*;
-import javax.ws.rs.core.*;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.ResponseBuilder;
-import javax.ws.rs.core.Response.Status;
-import org.jboss.resteasy.reactive.RestPath;
-import io.quarkus.hibernate.reactive.panache.Panache;
-import io.smallrye.mutiny.Uni;
 
-@Path("/api/contacts")
-@Produces(MediaType.APPLICATION_JSON)
-@Consumes(MediaType.APPLICATION_JSON)
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+
+import org.eclipse.microprofile.graphql.GraphQLApi;
+import org.eclipse.microprofile.graphql.Mutation;
+import org.eclipse.microprofile.graphql.Name;
+import org.eclipse.microprofile.graphql.Query;
+
+import io.quarkus.hibernate.reactive.panache.Panache;
+import io.smallrye.graphql.api.Subscription;
+import io.smallrye.mutiny.Multi;
+import io.smallrye.mutiny.Uni;
+import io.smallrye.mutiny.operators.multi.processors.BroadcastProcessor;
+import io.vertx.core.cli.annotations.Description;
+
+@GraphQLApi
+@ApplicationScoped
 public class ContactResource {
-    private ContactRepository _contactRepository;
+    private final ContactRepository _contactRepository;
+    private final BroadcastProcessor<Contact> _addedContactsProcessor;
+    private final BroadcastProcessor<Contact> _updatedContactsProcessor;
+    private final BroadcastProcessor<Long> _deletedContactsProcessor;
 
     @Inject
-    public ContactResource(ContactRepository cr) {
-        _contactRepository = cr;
+    public ContactResource(ContactRepository contactRepository) {
+        this._contactRepository = contactRepository;
+        this._addedContactsProcessor = BroadcastProcessor.create();
+        this._updatedContactsProcessor = BroadcastProcessor.create();
+        this._deletedContactsProcessor = BroadcastProcessor.create();
     }
 
-    @GET
+    @Query("allContacts")
+    @Description("Get all contacts from the database")
     public Uni<List<Contact>> getAllContacts() {
-        return _contactRepository.listAll();
+        return this._contactRepository.listAll();
     }
 
-    @GET
-    @Path("{id}")
-    public Uni<Response> getContactById(@RestPath Long id) {
-        return _contactRepository.findById(id).onItem()
-                .transform(contact -> contact != null ? Response.ok(contact) : Response.status(Status.NOT_FOUND))
-                .onItem().transform(ResponseBuilder::build);
+    @Query("getContactById")
+    @Description("Get a contact by ID")
+    public Uni<Contact> getContactById(@Name("contactId") Long id) {
+        return this._contactRepository.findById(id);
     }
 
-    @POST
-    public Uni<Response> addContact(Contact c) {
-        if (c == null) {
-            throw new WebApplicationException("Cannot add empty contact", 422);
-        }
-
-        return Panache.<Contact>withTransaction(c::persist).onItem()
-                .transform(inserted -> Response.created(URI.create("/api/contacts/" + inserted.getId())).build());
+    @Query("getContactByName")
+    @Description("Get a contact by name")
+    public Uni<List<Contact>> getContactByName(@Name("name") String name) {
+        return this._contactRepository.findByName(name);
     }
 
-    @PUT
-    @Path("{id}")
-    public Uni<Response> updateContact(@RestPath Long id, Contact c) {
-        if (c == null) {
-            throw new WebApplicationException("Cannot add empty contact", 422);
-        }
-
-        System.out.println(c);
-
-        return Panache
-                .withTransaction(() -> Contact.<Contact>findById(id).onItem().ifNotNull()
-                        .invoke(entity -> entity.updateContact(c)))
-                .onItem().ifNotNull().transform(entity -> Response.ok(entity).build()).onItem().ifNull()
-                .continueWith(Response.ok().status(Status.NOT_FOUND)::build);
+    @Query("searchContactByName")
+    @Description("Search a contact by name")
+    public Uni<List<Contact>> searchContactByName(@Name("name") String name) {
+        return this._contactRepository.searchByName(name);
     }
 
-    @DELETE
-    @Path("{id}")
-    public Uni<Response> deleteContact(@RestPath Long id) {
-        return Panache.withTransaction(() -> Contact.deleteById(id))
-                .map(deleted -> deleted ? Response.ok().status(Status.NO_CONTENT).build()
-                        : Response.ok().status(Status.NOT_FOUND).build());
+    @Query("getContactByEmail")
+    @Description("Get a contact by email")
+    public Uni<List<Contact>> getContactByEmail(@Name("email") String email) {
+        return this._contactRepository.findByEmail(email);
+    }
+
+    @Query("searchContactByEmail")
+    @Description("Search a contact by email")
+    public Uni<List<Contact>> searchContactByEmail(@Name("email") String email) {
+        return this._contactRepository.searchByEmail(email);
+    }
+
+    @Mutation("addContact")
+    @Description("Add a contact")
+    public Uni<Contact> addContact(final Contact c) {
+        Uni<Contact> uc = Panache.<Contact>withTransaction(c::persist);
+        this._addedContactsProcessor.onNext(c);
+        return uc;
+    }
+
+    @Subscription("addedContact")
+    public Multi<Contact> contactAdded() {
+        System.out.println("Subscription is getting called for addedContact");
+        return this._addedContactsProcessor;
+    }
+
+    @Mutation("updateContact")
+    @Description("Update a contact")
+    public Uni<Contact> updateContact(@Name("contactId") Long id, final Contact c) {
+        Uni<Contact> uc = Panache.withTransaction(
+                () -> Contact.<Contact>findById(id).onItem().ifNotNull().invoke(entity -> entity.updateContact(c)));
+        this._updatedContactsProcessor.onNext(c);
+        return uc;
+    }
+
+    @Subscription("updatedContact")
+    public Multi<Contact> contactUpdated() {
+        System.out.println("Subscription is getting called for updatedContact");
+        return this._updatedContactsProcessor;
+    }
+
+    @Mutation("deleteContact")
+    @Description("Delete a contact")
+    public Uni<Boolean> deleteContact(@Name("contactId") Long id) {
+        Uni<Boolean> isDeleted = Panache.withTransaction(() -> Contact.deleteById(id));
+
+        // wait for confirmation of deletion
+        // _deletedContactsProcessor.onNext(isDeleted.await().indefinitely());
+        this._deletedContactsProcessor.onNext(id);
+
+        return isDeleted;
+    }
+
+    @Subscription("deletedContact")
+    public Multi<Long> contactDeleted() {
+        System.out.println("Subscription is getting called for deletedContact");
+        return this._deletedContactsProcessor;
     }
 }
