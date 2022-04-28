@@ -1,6 +1,6 @@
-# A simple demo of API for Quarkus
+# GraphQL API and Subscriptions demo
 
-A very simple GraphQL API and GraphQL Client for contacts stored on local postgres database.
+A very simple GraphQL API and GraphQL Client for contacts stored on a local postgres database.
 
 ## Dependencies
 
@@ -23,3 +23,5 @@ A very simple GraphQL API and GraphQL Client for contacts stored on local postgr
 6. To test the GraphQL endpoints, load the file [SimpleContactsGraphQL.postman_collection.json](documents/SimpleContactsGraphQL.postman_collection.json) in Postman and execute the API calls.
 
 7. To run the GraphQL Client, execute the [`run_graphql_client.sh`](run_graphql_client.sh) script. It will launch the quarkus in dev mode at port 5006, and GraphQL API query results will be available at [`http://localhost:8081/dynamic`](http://localhost:8081/dynamic).
+
+8. To test the subscription of GraphQL client, visit the URL [`http://localhost:8081/dynamic/subscription`](http://localhost:8081/dynamic/subscription), and try adding new contacts using Postman.
