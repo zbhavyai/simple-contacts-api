@@ -1,8 +1,19 @@
 package ml.simplecontactsapi;
 
-import javax.persistence.*;
 import java.time.LocalDate;
+
+import javax.persistence.Cacheable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import io.quarkus.hibernate.reactive.panache.PanacheEntityBase;
 
 @Entity
@@ -59,68 +70,107 @@ public class Contact extends PanacheEntityBase {
     @Column(name = "label")
     private String label;
 
+    public Contact() {
+    }
+
+    @JsonCreator
+    public Contact(
+            @JsonProperty("id") final Long id,
+            @JsonProperty("namePrefix") final String namePrefix,
+            @JsonProperty("firstName") final String firstName,
+            @JsonProperty("middleName") final String middleName,
+            @JsonProperty("lastName") final String lastName,
+            @JsonProperty("nameSuffix") final String nameSuffix,
+            @JsonProperty("nickname") final String nickname,
+            @JsonProperty("company") final String company,
+            @JsonProperty("department") final String department,
+            @JsonProperty("title") final String title,
+            @JsonProperty("phone") final String phone,
+            @JsonProperty("email") final String email,
+            @JsonProperty("dateOfBirth") final LocalDate dateOfBirth,
+            @JsonProperty("website") final String website,
+            @JsonProperty("notes") final String notes,
+            @JsonProperty("label") final String label) {
+        this.id = id;
+        this.namePrefix = namePrefix;
+        this.firstName = firstName;
+        this.middleName = middleName;
+        this.lastName = lastName;
+        this.nameSuffix = nameSuffix;
+        this.nickname = nickname;
+        this.company = company;
+        this.department = department;
+        this.title = title;
+        this.phone = phone;
+        this.email = email;
+        this.dateOfBirth = dateOfBirth;
+        this.website = website;
+        this.notes = notes;
+        this.label = label;
+    }
+
     public Long getId() {
-        return id;
+        return this.id;
     }
 
     public String getNamePrefix() {
-        return namePrefix;
+        return this.namePrefix;
     }
 
     public String getFirstName() {
-        return firstName;
+        return this.firstName;
     }
 
     public String getMiddleName() {
-        return middleName;
+        return this.middleName;
     }
 
     public String getLastName() {
-        return lastName;
+        return this.lastName;
     }
 
     public String getNameSuffix() {
-        return nameSuffix;
+        return this.nameSuffix;
     }
 
     public String getNickname() {
-        return nickname;
+        return this.nickname;
     }
 
     public String getCompany() {
-        return company;
+        return this.company;
     }
 
     public String getDepartment() {
-        return department;
+        return this.department;
     }
 
     public String getTitle() {
-        return title;
+        return this.title;
     }
 
     public String getPhone() {
-        return phone;
+        return this.phone;
     }
 
     public String getEmail() {
-        return email;
+        return this.email;
     }
 
     public LocalDate getDateOfBirth() {
-        return dateOfBirth;
+        return this.dateOfBirth;
     }
 
     public String getWebsite() {
-        return website;
+        return this.website;
     }
 
     public String getNotes() {
-        return notes;
+        return this.notes;
     }
 
     public String getLabel() {
-        return label;
+        return this.label;
     }
 
     public void setId(Long id) {
@@ -188,37 +238,37 @@ public class Contact extends PanacheEntityBase {
     }
 
     public void updateContact(Contact c) {
-        namePrefix = c.namePrefix;
-        firstName = c.firstName;
-        middleName = c.middleName;
-        lastName = c.lastName;
-        nameSuffix = c.nameSuffix;
-        nickname = c.nickname;
-        company = c.company;
-        department = c.department;
-        title = c.title;
-        phone = c.phone;
-        email = c.email;
-        dateOfBirth = c.dateOfBirth;
-        website = c.website;
-        notes = c.notes;
-        label = c.label;
+        this.namePrefix = c.namePrefix;
+        this.firstName = c.firstName;
+        this.middleName = c.middleName;
+        this.lastName = c.lastName;
+        this.nameSuffix = c.nameSuffix;
+        this.nickname = c.nickname;
+        this.company = c.company;
+        this.department = c.department;
+        this.title = c.title;
+        this.phone = c.phone;
+        this.email = c.email;
+        this.dateOfBirth = c.dateOfBirth;
+        this.website = c.website;
+        this.notes = c.notes;
+        this.label = c.label;
     }
 
     @JsonIgnore
     public String getFullName() {
         StringBuilder sb = new StringBuilder();
 
-        if (firstName != null) {
-            sb.append(firstName);
+        if (this.firstName != null) {
+            sb.append(this.firstName);
         }
 
-        if (middleName != null) {
-            sb.append(" " + middleName);
+        if (this.middleName != null) {
+            sb.append(" " + this.middleName);
         }
 
-        if (lastName != null) {
-            sb.append(" " + lastName);
+        if (this.lastName != null) {
+            sb.append(" " + this.lastName);
         }
 
         // to handle null if no name is provided
@@ -234,22 +284,22 @@ public class Contact extends PanacheEntityBase {
     @Override
     public String toString() {
         StringBuffer sb = new StringBuffer();
-        sb.append(String.format("\nId = %d", id));
-        sb.append(String.format("\nPrefix = %s", namePrefix == null ? "null" : namePrefix));
-        sb.append(String.format("\nFirst Name = %s", firstName == null ? "null" : firstName));
-        sb.append(String.format("\nMiddle Name = %s", middleName == null ? "null" : middleName));
-        sb.append(String.format("\nLast Name = %s", lastName == null ? "null" : lastName));
-        sb.append(String.format("\nSuffix = %s", nameSuffix == null ? "null" : nameSuffix));
-        sb.append(String.format("\nNickname = %s", nickname == null ? "null" : nickname));
-        sb.append(String.format("\nCompany = %s", company == null ? "null" : company));
-        sb.append(String.format("\nDepartment = %s", department == null ? "null" : department));
-        sb.append(String.format("\nTitle = %s", title == null ? "null" : title));
-        sb.append(String.format("\nPhone = %s", phone == null ? "null" : phone));
-        sb.append(String.format("\nEmail = %s", email == null ? "null" : email));
-        sb.append(String.format("\nDOB = %s", dateOfBirth == null ? "null" : dateOfBirth));
-        sb.append(String.format("\nWebsite = %s", website == null ? "null" : website));
-        sb.append(String.format("\nNotes = %s", notes == null ? "null" : notes));
-        sb.append(String.format("\nLabel = %s", label == null ? "null" : label));
+        sb.append(String.format("\nId = %d", this.id));
+        sb.append(String.format("\nPrefix = %s", this.namePrefix == null ? "null" : this.namePrefix));
+        sb.append(String.format("\nFirst Name = %s", this.firstName == null ? "null" : this.firstName));
+        sb.append(String.format("\nMiddle Name = %s", this.middleName == null ? "null" : this.middleName));
+        sb.append(String.format("\nLast Name = %s", this.lastName == null ? "null" : this.lastName));
+        sb.append(String.format("\nSuffix = %s", this.nameSuffix == null ? "null" : this.nameSuffix));
+        sb.append(String.format("\nNickname = %s", this.nickname == null ? "null" : this.nickname));
+        sb.append(String.format("\nCompany = %s", this.company == null ? "null" : this.company));
+        sb.append(String.format("\nDepartment = %s", this.department == null ? "null" : this.department));
+        sb.append(String.format("\nTitle = %s", this.title == null ? "null" : this.title));
+        sb.append(String.format("\nPhone = %s", this.phone == null ? "null" : this.phone));
+        sb.append(String.format("\nEmail = %s", this.email == null ? "null" : this.email));
+        sb.append(String.format("\nDOB = %s", this.dateOfBirth == null ? "null" : this.dateOfBirth));
+        sb.append(String.format("\nWebsite = %s", this.website == null ? "null" : this.website));
+        sb.append(String.format("\nNotes = %s", this.notes == null ? "null" : this.notes));
+        sb.append(String.format("\nLabel = %s", this.label == null ? "null" : this.label));
         return sb.toString();
     }
 }

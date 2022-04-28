@@ -1,15 +1,17 @@
 package ml.simplecontactsapi;
 
-import javax.enterprise.context.ApplicationScoped;
 import java.util.List;
 import java.util.function.Predicate;
+
+import javax.enterprise.context.ApplicationScoped;
+
 import io.quarkus.hibernate.reactive.panache.PanacheRepository;
 import io.smallrye.mutiny.Uni;
 
 @ApplicationScoped
 public class ContactRepository implements PanacheRepository<Contact> {
     public Uni<List<Contact>> findByName(String name) {
-        return findAll().stream().filter(new Predicate<Contact>() {
+        return this.findAll().stream().filter(new Predicate<Contact>() {
             @Override
             public boolean test(Contact c) {
                 if (c.getFirstName() != null && c.getFirstName().equalsIgnoreCase(name)) {
@@ -32,7 +34,7 @@ public class ContactRepository implements PanacheRepository<Contact> {
     }
 
     public Uni<List<Contact>> searchByName(String name) {
-        return findAll().stream().filter(new Predicate<Contact>() {
+        return this.findAll().stream().filter(new Predicate<Contact>() {
             @Override
             public boolean test(Contact c) {
                 return c.getFullName().toLowerCase().contains(name.toLowerCase());
@@ -41,11 +43,11 @@ public class ContactRepository implements PanacheRepository<Contact> {
     }
 
     public Uni<List<Contact>> findByEmail(String email) {
-        return find("email", email).list();
+        return this.find("email", email).list();
     }
 
     public Uni<List<Contact>> searchByEmail(String email) {
-        return findAll().stream().filter(new Predicate<Contact>() {
+        return this.findAll().stream().filter(new Predicate<Contact>() {
             @Override
             public boolean test(Contact c) {
                 return c.getEmail().toLowerCase().contains(email.toLowerCase());
