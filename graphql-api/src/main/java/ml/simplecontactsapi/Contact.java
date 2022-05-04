@@ -14,11 +14,16 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import org.eclipse.microprofile.graphql.Input;
+import org.eclipse.microprofile.graphql.Type;
+
 import io.quarkus.hibernate.reactive.panache.PanacheEntityBase;
 
 @Entity
 @Cacheable
 @Table(name = "contacts")
+@Type("Contact")
+@Input("ContactInput")
 public class Contact extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
