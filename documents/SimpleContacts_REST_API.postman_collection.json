@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "ac02bc5b-78dc-4785-b4ff-28517c76f17f",
-		"name": "SimpleContactsAPI",
+		"_postman_id": "cd839e83-0346-4f77-a8a1-cdeda1f9b6ff",
+		"name": "SimpleContacts_REST_API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -11,14 +11,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/contacts",
+					"raw": "http://localhost:8080/rest/contacts",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"api",
+						"rest",
 						"contacts"
 					]
 				}
@@ -61,14 +61,14 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/contacts/",
+					"raw": "http://localhost:8080/rest/contacts/",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"api",
+						"rest",
 						"contacts",
 						""
 					]
@@ -83,7 +83,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"namePrefix\": \"Dr\",\n    \"firstName\": \"Michael\",\n    \"middleName\": \"Gary\",\n    \"lastName\": \"Scott\",\n    \"nameSuffix\": null,\n    \"nickname\": \"Ping\",\n    \"company\": \"Dunder Mifflin\",\n    \"department\": \"HR\",\n    \"title\": \"Regional Manager\",\n    \"phone\": \"111-111-1111\",\n    \"email\": \"m.scott@dundermifflin.com\",\n    \"dateOfBirth\": \"1965-03-15\",\n    \"website\": null,\n    \"notes\": null,\n    \"label\": null\n}",
+					"raw": "{\n    \"namePrefix\": \"Dr\",\n    \"firstName\": \"Bhavyai\",\n    \"middleName\": \"Gary\",\n    \"lastName\": \"Gupta\",\n    \"nameSuffix\": null,\n    \"nickname\": \"Ping\",\n    \"company\": \"Dunder Mifflin\",\n    \"department\": \"HR\",\n    \"title\": \"Regional Manager\",\n    \"phone\": \"111-111-1111\",\n    \"email\": \"m.scott@dundermifflin.com\",\n    \"dateOfBirth\": \"1965-03-15\",\n    \"website\": null,\n    \"notes\": null,\n    \"label\": null\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -91,14 +91,14 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/contacts/3",
+					"raw": "http://localhost:8080/rest/contacts/3",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"api",
+						"rest",
 						"contacts",
 						"3"
 					]
@@ -121,14 +121,14 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/contacts/3",
+					"raw": "http://localhost:8080/rest/contacts/3",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"api",
+						"rest",
 						"contacts",
 						"3"
 					]
