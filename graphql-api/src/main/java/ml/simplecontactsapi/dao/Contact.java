@@ -1,4 +1,4 @@
-package ml.simplecontactsapi;
+package ml.simplecontactsapi.dao;
 
 import java.time.LocalDate;
 

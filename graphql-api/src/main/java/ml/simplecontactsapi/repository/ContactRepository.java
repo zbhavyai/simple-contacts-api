@@ -1,4 +1,4 @@
-package ml.simplecontactsapi;
+package ml.simplecontactsapi.repository;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -7,6 +7,7 @@ import javax.enterprise.context.ApplicationScoped;
 
 import io.quarkus.hibernate.reactive.panache.PanacheRepository;
 import io.smallrye.mutiny.Uni;
+import ml.simplecontactsapi.dao.Contact;
 
 @ApplicationScoped
 public class ContactRepository implements PanacheRepository<Contact> {

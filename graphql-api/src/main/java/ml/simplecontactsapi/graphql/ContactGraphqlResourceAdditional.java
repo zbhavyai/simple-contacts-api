@@ -1,38 +1,36 @@
-package ml.simplecontactsapi;
+package ml.simplecontactsapi.graphql;
 
 import java.util.List;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import org.eclipse.microprofile.graphql.GraphQLApi;
 import org.eclipse.microprofile.graphql.Mutation;
 import org.eclipse.microprofile.graphql.Query;
 
-import io.quarkus.hibernate.reactive.panache.Panache;
 import io.smallrye.mutiny.Uni;
 import io.vertx.core.cli.annotations.Description;
+import ml.simplecontactsapi.dao.Contact;
+import ml.simplecontactsapi.service.ContactService;
 
 @GraphQLApi
-@ApplicationScoped
-public class ContactAdditionalResource {
-    private final ContactRepository _contactRepository;
+public class ContactGraphqlResourceAdditional {
+    private final ContactService _contactService;
 
     @Inject
-    public ContactAdditionalResource(ContactRepository contactRepository) {
-        this._contactRepository = contactRepository;
+    public ContactGraphqlResourceAdditional(ContactService contactService) {
+        _contactService = contactService;
     }
 
     @Query("allContactsOnceAgain")
     @Description("Get all contacts from the database")
     public Uni<List<Contact>> getAllContacts() {
-        return this._contactRepository.listAll();
+        return _contactService.getAllContacts();
     }
 
     @Mutation("addMoreContact")
     @Description("Add a contact")
     public Uni<Contact> addContact(final Contact c) {
-        Uni<Contact> uc = Panache.<Contact>withTransaction(c::persist);
-        return uc;
+        return _contactService.addContact(c);
     }
 }
