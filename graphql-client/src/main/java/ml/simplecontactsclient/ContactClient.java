@@ -57,17 +57,18 @@ public class ContactClient {
      * @return
      */
     @GET
-    @Path("/dynamic/subscription")
+    @Path("/dynamic/add-subscription")
     @Produces(MediaType.APPLICATION_JSON)
     public Multi<Response> subscribeToAdd() throws Exception {
+        String queryString = "subscription test {\naddedContact {\ncompany\nfirstName\n}\n}";
+        return this.dynamicClient.subscription(queryString);
 
         // Document query = document(operation(field("addedContact", field("company"),
         // field("phone"), field("email"))));
-        String queryString = "subscription test {\naddedContact {\ncompany\nfirstName\n}\n}";
+
         // this.dynamicClient.executeAsync(new RequestImpl(document(operation(
         // field("subscribeToAdd", field("addedContact", field("company"),
         // field("phone"), field("email")))))));
-        return this.dynamicClient.subscription(queryString);
 
         // return this.dynamicClient.executeAsync(query);
         // return this.dynamicClient.subscription(query);
