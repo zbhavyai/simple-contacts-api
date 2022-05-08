@@ -10,45 +10,64 @@ import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.operators.multi.processors.BroadcastProcessor;
 import ml.simplecontactsapi.dao.Contact;
-import ml.simplecontactsapi.repository.ContactRepository;
 
 @ApplicationScoped
 public class ContactService {
-    private final ContactRepository _contactRepository;
     private final BroadcastProcessor<Contact> _addedContactsProcessor;
     private final BroadcastProcessor<Contact> _updatedContactsProcessor;
     private final BroadcastProcessor<Long> _deletedContactsProcessor;
 
     @Inject
-    public ContactService(ContactRepository contactRepository) {
-        _contactRepository = contactRepository;
+    public ContactService() {
         _addedContactsProcessor = BroadcastProcessor.create();
         _updatedContactsProcessor = BroadcastProcessor.create();
         _deletedContactsProcessor = BroadcastProcessor.create();
     }
 
     public Uni<List<Contact>> getAllContacts() {
-        return _contactRepository.listAll();
+        return Contact.findAll().list();
     }
 
     public Uni<Contact> getContactById(Long id) {
-        return _contactRepository.findById(id);
+        return Contact.findById(id);
     }
 
     public Uni<List<Contact>> getContactByName(String name) {
-        return _contactRepository.findByName(name);
+        Multi<Contact> allContacts = Contact.findAll().stream();
+
+        return allContacts
+                .filter(c -> {
+                    if (c.getFirstName() != null && c.getFirstName().equalsIgnoreCase(name)) {
+                        return true;
+                    } else if (c.getMiddleName() != null && c.getMiddleName().equalsIgnoreCase(name)) {
+                        return true;
+                    } else if (c.getLastName() != null && c.getLastName().equalsIgnoreCase(name)) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                })
+                .collect().asList();
     }
 
     public Uni<List<Contact>> searchContactByName(String name) {
-        return _contactRepository.searchByName(name);
+        Multi<Contact> allContacts = Contact.findAll().stream();
+
+        return allContacts
+                .filter(c -> c.getFullName().toLowerCase().contains(name.toLowerCase()))
+                .collect().asList();
     }
 
     public Uni<List<Contact>> getContactByEmail(String email) {
-        return _contactRepository.findByEmail(email);
+        return Contact.find("email", email).list();
     }
 
     public Uni<List<Contact>> searchContactByEmail(String email) {
-        return _contactRepository.searchByEmail(email);
+        Multi<Contact> allContacts = Contact.findAll().stream();
+
+        return allContacts
+                .filter(c -> c.getEmail().toLowerCase().contains(email.toLowerCase()))
+                .collect().asList();
     }
 
     public Uni<Contact> addContact(final Contact c) {

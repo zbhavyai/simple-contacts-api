@@ -287,6 +287,25 @@ public class Contact extends PanacheEntityBase {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null || !(obj instanceof Contact)) {
+            return false;
+        }
+
+        final Contact other = (Contact) obj;
+
+        if (this.toString().equals(other.toString())) {
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
     public String toString() {
         StringBuffer sb = new StringBuffer();
         sb.append(String.format("\nId = %d", this.id));

@@ -26,7 +26,7 @@ public class ContactGraphqlResource {
     }
 
     @Query("allContacts")
-    @Description("Get all contacts from the database")
+    @Description("Get all contacts")
     public Uni<List<Contact>> getAllContacts() {
         return _contactService.getAllContacts();
     }
