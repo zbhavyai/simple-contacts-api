@@ -9,7 +9,6 @@ import org.eclipse.microprofile.graphql.Mutation;
 import org.eclipse.microprofile.graphql.Query;
 
 import io.smallrye.mutiny.Uni;
-import io.vertx.core.cli.annotations.Description;
 import ml.simplecontactsapi.dao.Contact;
 import ml.simplecontactsapi.service.ContactService;
 
@@ -23,14 +22,12 @@ public class ContactGraphqlResourceAdditional {
     }
 
     @Query("allContactsOnceAgain")
-    @Description("Get all contacts from the database")
     public Uni<List<Contact>> getAllContacts() {
         return _contactService.getAllContacts();
     }
 
     @Mutation("addMoreContact")
-    @Description("Add a contact")
-    public Uni<Contact> addContact(final Contact c) {
+    public Uni<Boolean> addContact(final Contact c) {
         return _contactService.addContact(c);
     }
 }

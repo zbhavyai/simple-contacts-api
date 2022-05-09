@@ -16,6 +16,7 @@ import org.jboss.resteasy.reactive.RestPath;
 
 import io.smallrye.mutiny.Uni;
 import ml.simplecontactsapi.dao.Contact;
+import ml.simplecontactsapi.model.ContactList;
 import ml.simplecontactsapi.service.ContactService;
 
 @Path("/rest/contacts")
@@ -35,25 +36,61 @@ public class ContactRestResource {
     }
 
     @GET
+    @Path("contactList")
+    public Uni<ContactList> getContactList() {
+        return _contactService.getContactList();
+    }
+
+    @GET
     @Path("{id}")
-    public Uni<Contact> getContactById(@RestPath Long id) {
+    public Uni<Contact> getContactById(@RestPath Integer id) {
         return _contactService.getContactById(id);
     }
 
+    @GET
+    @Path("getContactByName/{name}")
+    public Uni<List<Contact>> getContactByName(@RestPath String name) {
+        return _contactService.getContactByName(name);
+    }
+
+    @GET
+    @Path("searchContactByName/{name}")
+    public Uni<List<Contact>> searchContactByName(@RestPath String name) {
+        return _contactService.searchContactByName(name);
+    }
+
+    @GET
+    @Path("getContactByEmail/{email}")
+    public Uni<List<Contact>> getContactByEmail(@RestPath String email) {
+        return _contactService.getContactByEmail(email);
+    }
+
+    @GET
+    @Path("searchContactByEmail/{email}")
+    public Uni<List<Contact>> searchContactByEmail(@RestPath String email) {
+        return _contactService.searchContactByEmail(email);
+    }
+
     @POST
-    public Uni<Contact> addContact(Contact c) {
+    public Uni<Boolean> addContact(Contact c) {
         return _contactService.addContact(c);
+    }
+
+    @POST
+    @Path("addContactList")
+    public Uni<Boolean> addContactList(final ContactList cl) {
+        return _contactService.addContactList(cl);
     }
 
     @PUT
     @Path("{id}")
-    public Uni<Contact> updateContact(@RestPath Long id, Contact c) {
+    public Uni<Contact> updateContact(@RestPath Integer id, Contact c) {
         return _contactService.updateContact(id, c);
     }
 
     @DELETE
     @Path("{id}")
-    public Uni<Boolean> deleteContact(@RestPath Long id) {
+    public Uni<Boolean> deleteContact(@RestPath Integer id) {
         return _contactService.deleteContact(id);
     }
 }

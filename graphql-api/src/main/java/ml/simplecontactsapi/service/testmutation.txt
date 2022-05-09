@@ -1,0 +1,57 @@
+mutation addMyContactList {
+    addContacts(contactList :{
+       contactList:
+        [
+        {
+        namePrefix: null,
+        firstName: "Joe",
+        lastName: "Biden",
+        nameSuffix: "Mr",
+        nickname: "Bi-Dung",
+        company: "White House",
+        department: "POTUS",
+        title: "President",
+        phone: "111-111-1111",
+        email: "joe.biden@usa.gov",
+        dateOfBirth: "1942-11-20",
+        website: null,
+        notes: null,
+        label: null
+        }
+        ]
+    })
+}
+
+
+
+Validation error of type WrongType: argument 'cl' with value 'StringValue{value='
+{
+    "contactList": [
+        {
+            "lastName": "Biden",
+            "website": null,
+            "notes": null,
+            "nameSuffix": "Mr",
+            "dateOfBirth": "1942-11-20",
+            "label": null,
+            "title": "President",
+            "firstName": "Joe",
+            "phone": "111-111-1111",
+            "namePrefix": null,
+            "nickname": "BiJoe",
+            "company": "White House",
+            "department": "POTUS",
+            "email": "joe.biden@usa.gov"
+        }
+    ]
+}'}'
+
+
+is not a valid 'Unknown Scalar Type [ml.simplecontactsapi.model.ContactList]' @ 'addContacts'
+
+mutation CreateReviewForEpisode($ep: Episode!, $review: ReviewInput!) {
+    createReview(episode: $ep, review: $review) {
+      stars
+      commentary
+    }
+  }

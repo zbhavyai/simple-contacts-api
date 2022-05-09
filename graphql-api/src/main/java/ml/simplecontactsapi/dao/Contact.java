@@ -2,13 +2,7 @@ package ml.simplecontactsapi.dao;
 
 import java.time.LocalDate;
 
-import javax.persistence.Cacheable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.enterprise.context.ApplicationScoped;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,62 +11,40 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.eclipse.microprofile.graphql.Input;
 import org.eclipse.microprofile.graphql.Type;
 
-import io.quarkus.hibernate.reactive.panache.PanacheEntityBase;
-
-@Entity
-@Cacheable
-@Table(name = "contacts")
 @Type("Contact")
 @Input("ContactInput")
-public class Contact extends PanacheEntityBase {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+@ApplicationScoped
+public class Contact {
     private Long id;
 
-    @Column(name = "name_prefix")
     private String namePrefix;
 
-    @Column(name = "first_name")
     private String firstName;
 
-    @Column(name = "middle_name")
     private String middleName;
 
-    @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "name_suffix")
     private String nameSuffix;
 
-    @Column(name = "nickname")
     private String nickname;
 
-    @Column(name = "company")
     private String company;
 
-    @Column(name = "department")
     private String department;
 
-    @Column(name = "title")
     private String title;
 
-    @Column(name = "phone")
     private String phone;
 
-    @Column(name = "email")
     private String email;
 
-    @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
 
-    @Column(name = "website")
     private String website;
 
-    @Column(name = "notes")
     private String notes;
 
-    @Column(name = "label")
     private String label;
 
     public Contact() {
